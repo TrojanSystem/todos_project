@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import '../input_form/add_task.dart';
 import '../items/time_teller.dart';
 import '../model/input_data.dart';
 import '../items/button.dart';
@@ -25,14 +26,17 @@ class _HomePageState extends State<HomePage> {
     Timer.periodic(const Duration(seconds: 1), (timer) {
       day = DateFormat.yMMMMd().format(DateTime.now());
       time = DateFormat.jm().format(DateTime.now());
-      setState(() {});
+      if (mounted) {
+        setState(() {});
+      }
     });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final List taskData= Provider.of<InputData>(context).taskLists;
+    final List taskData = Provider.of<InputData>(context).taskLists;
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -41,10 +45,19 @@ class _HomePageState extends State<HomePage> {
         toolbarHeight: 90,
         flexibleSpace: Row(
           mainAxisAlignment: MainAxisAlignment.end,
-          children: const [
+          children: [
             Padding(
-              padding: EdgeInsets.only(top: 48.0, right: 30),
-              child: AddButton(),
+              padding: const EdgeInsets.only(top: 38.0, right: 30),
+              child: AddButton(
+                navigateToPage: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => const AddTask(),
+                    ),
+                  );
+                },
+                colour: Colors.green[600],
+              ),
             ),
           ],
         ),
@@ -52,6 +65,7 @@ class _HomePageState extends State<HomePage> {
       body: Column(
         children: [
           Expanded(
+            flex: 1,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -63,9 +77,9 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 const SizedBox(
-                  height: 20,
+                  height: 10,
                 ),
-                 ProgressContainerItem(index:taskData.length),
+                ProgressContainerItem(index: 5),
                 const SizedBox(
                   height: 10,
                 ),
@@ -76,14 +90,21 @@ class _HomePageState extends State<HomePage> {
           Expanded(
             flex: 2,
             child: Consumer<InputData>(
-              builder: (context, data, child) => ListView.builder(
-                itemCount: data.taskLists.length,
-                itemBuilder: (context, index) {
-                  return TaskListItem(
-                    task: data.taskLists[index],
-                  );
-                },
-              ),
+              builder: (context, data, child) => data.isLoading
+                  ? const Center(
+                      child: CircularProgressIndicator(
+                        color: Colors.red,
+                      ),
+                    )
+                  : ListView.builder(
+                      itemCount: data.taskLists.length,
+                      itemBuilder: (context, index) {
+                        return TaskListItem(
+                          task: data.taskLists[index],
+                          index: index,
+                        );
+                      },
+                    ),
             ),
           ),
         ],

@@ -6,10 +6,11 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class UpdateTask extends StatefulWidget {
+  int index;
   String existedTitle;
   String existedDescription;
 
-  UpdateTask({this.existedDescription, this.existedTitle});
+  UpdateTask({this.existedDescription, this.existedTitle, this.index});
 
   @override
   State<UpdateTask> createState() => _UpdateTaskState();
@@ -58,7 +59,7 @@ class _UpdateTaskState extends State<UpdateTask> {
         backgroundColor: Colors.white,
         toolbarHeight: 80,
         title: const Text(
-          'Add task',
+          'Update task',
           style: TextStyle(
             fontSize: 22,
             color: Colors.black,
@@ -254,14 +255,15 @@ class _UpdateTaskState extends State<UpdateTask> {
               onTap: () {
                 if (formKey.currentState.validate()) {
                   formKey.currentState.save();
-                  var model = Task(
+                  var updateModel = Task(
+                    id: widget.index,
                     title: updateTitle,
                     description: updateDescription,
                     dateTime: updateDateTime,
                     alarm: updateAlarm,
                   );
                   Provider.of<InputData>(context, listen: false)
-                      .addTaskList(model);
+                      .updateTaskList(updateModel);
                   Navigator.of(context).pop();
                 }
               },

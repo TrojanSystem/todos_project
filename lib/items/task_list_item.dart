@@ -1,22 +1,27 @@
 import 'package:example/input_form/update_task.dart';
+import 'package:example/model/input_data.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../model/task_model.dart';
 
 class TaskListItem extends StatelessWidget {
   final Task task;
+  final int index;
 
-  TaskListItem({
-    this.task,
-  });
+  TaskListItem({this.task, this.index});
+
+
 
   @override
   Widget build(BuildContext context) {
+    bool _isTapped = false;
     return GestureDetector(
       onTap: () {
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (_) => UpdateTask(
+              index: index,
               existedDescription: task.description,
               existedTitle: task.title,
             ),
@@ -54,9 +59,15 @@ class TaskListItem extends StatelessWidget {
             ),
             Expanded(
               child: IconButton(
-                onPressed: () {},
-                icon: const Icon(
-                  Icons.check_circle_outline_rounded,
+                onPressed: () {
+                 Provider.of<InputData>(context, listen: false)
+                      .changeStatus();
+                },
+                icon: Icon(
+                  Provider.of<InputData>(context, listen: false)
+                      .isTaped
+                      ? Icons.circle_outlined
+                      : Icons.check_circle_outline_rounded,
                 ),
                 color: Colors.white,
               ),

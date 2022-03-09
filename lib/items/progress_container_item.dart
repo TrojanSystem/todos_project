@@ -22,7 +22,7 @@ class _ProgressContainerItemState extends State<ProgressContainerItem> {
   Widget build(BuildContext context) {
     final taskData = Provider.of<InputData>(context);
     return Container(
-      margin: const EdgeInsets.all(10),
+      margin: const EdgeInsets.only(left: 10,right: 10),
       padding: const EdgeInsets.only(left: 20),
       height: 100,
       width: double.infinity,
@@ -32,7 +32,7 @@ class _ProgressContainerItemState extends State<ProgressContainerItem> {
             circularStrokeCap: CircularStrokeCap.round,
             radius: 80.0,
             lineWidth: 9.0,
-            percent: double.parse(taskData.percent()),
+            percent: 0.8, //double.parse(taskData.percent())
             center: Text(
               '${taskData.doublePercent()} %',
               style: const TextStyle(fontWeight: FontWeight.bold),

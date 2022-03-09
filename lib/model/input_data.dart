@@ -1,43 +1,59 @@
+import 'package:example/database/database_creator.dart';
 import 'package:flutter/material.dart';
 
 import 'task_model.dart';
 
 class InputData extends ChangeNotifier {
+  DatabaseHelper db = DatabaseHelper();
   int taskDone = 2;
-  final List<Task> _taskList = [
-    Task(
-      alarm: TimeOfDay.now(),
-      dateTime: DateTime.now(),
-      description: 'Talk about material needed for the next four',
-      title: 'Call to Mele',
-    ),
-    Task(
-      alarm: TimeOfDay.now(),
-      dateTime: DateTime.now(),
-      description: 'You need to open it for the next 30 day to gain the badge',
-      title: 'Check Your StackOverflow',
-    ),
-    Task(
-      alarm: TimeOfDay.now(),
-      dateTime: DateTime.now(),
-      description: 'It is just a daily check up',
-      title: 'Call to Granny',
-    ),
-  ];
+  bool _isLoading = true;
+  bool _isTaped = true;
+  List<Task> _taskList = [];
 
   List<Task> get taskLists => _taskList;
 
-  addTaskList(Task task) {
-    taskLists.insert(0, task);
+  bool get isLoading => _isLoading;
+
+  bool get isTaped => _isTaped;
+
+  bool changeStatus() {
+    _isTaped = !_isTaped;
+    return _isTaped;
+  }
+
+  Future loadTaskList() async {
+    _isLoading = true;
+    notifyListeners();
+    _taskList = await db.getTasks();
+    _isLoading = false;
+    notifyListeners();
+  }
+
+  Future addTaskList(Task task) async {
+    await db.insertTask(task);
+    await loadTaskList();
+    notifyListeners();
+  }
+
+  Future updateTaskList(Task task) async {
+    await db.updateTaskList(task);
+    await loadTaskList();
+    notifyListeners();
+  }
+
+  Future deleteTaskList(int task) async {
+    await db.deleteTask(task);
+    await loadTaskList();
     notifyListeners();
   }
 
   String percent() {
     double x = (taskDone / taskLists.length);
-    return x.toStringAsFixed(1);
+    return 0.8.toStringAsFixed(2);
   }
+
   int doublePercent() {
     double x = (taskDone * 100 / taskLists.length);
-    return x.floor();
+    return 8.floor();
   }
 }
