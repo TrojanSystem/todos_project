@@ -33,7 +33,8 @@ class ProjectPage extends StatelessWidget {
                     context: context,
                     builder: (_) => const ProjectTitleInput(),
                   );
-                },colour: Colors.blue[800],
+                },
+                colour: Colors.blue[800],
               ),
             ),
           ],
@@ -44,7 +45,6 @@ class ProjectPage extends StatelessWidget {
           itemCount: data.projectTitleLists.length,
           itemBuilder: (context, index) => ProjectListItem(
             title: data.projectTitleLists[index],
-            numberOfTasks: data.projectTitleLists.length,
             index: index,
           ),
         ),

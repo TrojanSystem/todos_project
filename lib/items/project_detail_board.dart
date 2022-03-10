@@ -27,7 +27,7 @@ class _ProjectDetailBoardState extends State<ProjectDetailBoard> {
         .projectTodoLists
         .where((element) => element.indexs == widget.index)
         .toList();
-    print(selectedTodo);
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
