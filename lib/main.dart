@@ -1,13 +1,14 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:example/model/input_data.dart';
+import 'package:example/model/project_todo_input_data.dart';
 import 'package:example/screen/project_page.dart';
 import 'package:example/screen/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'constants.dart';
-import 'model/project_input_data.dart';
+import 'model/project_title_input_data.dart';
 
 void main() {
   runApp(MyApp());
@@ -37,12 +38,15 @@ class _MyAppState extends State<MyApp> {
           create: (ctx) => InputData()..loadTaskList(),
         ),
         ChangeNotifierProvider(
-          create: (ctx) => ProjectInputData(),
+          create: (ctx) => ProjectTitleInputData()..loadProjectTitleList(),
+        ),
+        ChangeNotifierProvider(
+          create: (ctx) => ProjectTodoInputData()..loadProjectTodoList(),
         ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
+        title: 'Todo Project',
         theme: themes,
         home: Scaffold(
           body: page[_selectedIndex],

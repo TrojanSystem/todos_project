@@ -1,14 +1,12 @@
-import 'package:example/model/input_data.dart';
-import 'package:example/model/task_model.dart';
+import 'package:example/model/project_list_model.dart';
+import 'package:example/model/project_todo_input_data.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_alarm_clock/flutter_alarm_clock.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-import '../model/project_input_data.dart';
 
 class ProjectTaskListInput extends StatefulWidget {
-  const ProjectTaskListInput({Key key}) : super(key: key);
+ final String index;
+   ProjectTaskListInput({this.index});
 
   @override
   State<ProjectTaskListInput> createState() => _ProjectTaskListInputState();
@@ -72,8 +70,9 @@ class _ProjectTaskListInputState extends State<ProjectTaskListInput> {
             onTap: () {
               if (formKey.currentState.validate()) {
                 formKey.currentState.save();
-                Provider.of<ProjectInputData>(context, listen: false)
-                    .addProjectList(lists);
+               var projectTodoModel = ProjectListModel(todo: lists,indexs: widget.index);
+                Provider.of<ProjectTodoInputData>(context, listen: false)
+                    .addProjectTitleList(projectTodoModel);
                 Navigator.of(context).pop();
               }
             },

@@ -1,5 +1,5 @@
 import 'package:example/items/project_detail_board.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:example/model/project_title_model.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:provider/provider.dart';
@@ -8,8 +8,8 @@ import '../model/input_data.dart';
 
 class ProjectListItem extends StatefulWidget {
   final int index;
-  String title;
-  int numberOfTasks;
+ final ProjectTitleModel title;
+ final int numberOfTasks;
 
   ProjectListItem({this.index, this.title, this.numberOfTasks});
 
@@ -39,7 +39,7 @@ class _ProjectListItemState extends State<ProjectListItem> {
             width: 200,
             child: ListTile(
               title: Text(
-                widget.title,
+                widget.title.title,
                 style: const TextStyle(
                   fontWeight: FontWeight.w900,
                   fontSize: 20,
@@ -64,7 +64,7 @@ class _ProjectListItemState extends State<ProjectListItem> {
             onPressed: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (_) => ProjectDetailBoard(index: widget.index),
+                  builder: (_) => ProjectDetailBoard(index: widget.title.id.toString()),
                 ),
               );
             },

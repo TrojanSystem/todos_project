@@ -1,6 +1,6 @@
 import 'package:example/input_form/project_task_list_input.dart';
 import 'package:example/input_form/project_title_input.dart';
-import 'package:example/model/project_input_data.dart';
+import 'package:example/model/project_title_input_data.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -39,12 +39,12 @@ class ProjectPage extends StatelessWidget {
           ],
         ),
       ),
-      body: Consumer<ProjectInputData>(
+      body: Consumer<ProjectTitleInputData>(
         builder: (context, data, child) => ListView.builder(
-          itemCount: data.projectTitle.length,
+          itemCount: data.projectTitleLists.length,
           itemBuilder: (context, index) => ProjectListItem(
-            title: data.projectTitle[index],
-            numberOfTasks: data.project.length,
+            title: data.projectTitleLists[index],
+            numberOfTasks: data.projectTitleLists.length,
             index: index,
           ),
         ),

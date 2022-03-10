@@ -1,11 +1,7 @@
-import 'package:example/model/input_data.dart';
-import 'package:example/model/task_model.dart';
+import 'package:example/model/project_title_input_data.dart';
+import 'package:example/model/project_title_model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_alarm_clock/flutter_alarm_clock.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-
-import '../model/project_input_data.dart';
 
 class ProjectTitleInput extends StatefulWidget {
   const ProjectTitleInput({Key key}) : super(key: key);
@@ -72,8 +68,9 @@ class _ProjectTitleInputState extends State<ProjectTitleInput> {
             onTap: () {
               if (formKey.currentState.validate()) {
                 formKey.currentState.save();
-                Provider.of<ProjectInputData>(context, listen: false)
-                    .addProjectTitle(projectTitle);
+                var projectModel = ProjectTitleModel(title: projectTitle);
+                Provider.of<ProjectTitleInputData>(context, listen: false)
+                    .addProjectTitleList(projectModel);
                 Navigator.of(context).pop();
               }
             },
