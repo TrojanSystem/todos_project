@@ -44,7 +44,7 @@ class ProjectPage extends StatelessWidget {
           itemCount: data.projectTitleLists.length,
           itemBuilder: (context, index) => ProjectListItem(
             title: data.projectTitleLists[index],
-            numberOfTasks: data.projectTitleLists.length,
+
             index: index,
           ),
         ),
