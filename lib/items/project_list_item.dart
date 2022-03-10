@@ -5,13 +5,14 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:provider/provider.dart';
 
 import '../model/input_data.dart';
+import '../model/project_todo_input_data.dart';
 
 class ProjectListItem extends StatefulWidget {
   final int index;
  final ProjectTitleModel title;
- final int numberOfTasks;
 
-  ProjectListItem({this.index, this.title, this.numberOfTasks});
+
+  ProjectListItem({this.index, this.title});
 
   @override
   State<ProjectListItem> createState() => _ProjectListItemState();
@@ -22,6 +23,10 @@ class _ProjectListItemState extends State<ProjectListItem> {
 
   @override
   Widget build(BuildContext context) {
+    final selectedTodo = Provider.of<ProjectTodoInputData>(context)
+        .projectTodoLists
+        .where((element) => element.indexs == widget.title.id.toString())
+        .toList();
     final taskData = Provider.of<InputData>(context);
     return Container(
       margin: const EdgeInsets.only(
@@ -45,7 +50,7 @@ class _ProjectListItemState extends State<ProjectListItem> {
                   fontSize: 20,
                 ),
               ),
-              subtitle: Text('${widget.numberOfTasks} Tasks'),
+              subtitle: Text('${selectedTodo.length} Tasks'),
             ),
           ),
           CircularPercentIndicator(

@@ -59,7 +59,6 @@ class _HomePageState extends State<HomePage> {
                 colour: Colors.green[600],
               ),
             ),
-
           ],
         ),
       ),
@@ -91,21 +90,32 @@ class _HomePageState extends State<HomePage> {
           Expanded(
             flex: 2,
             child: Consumer<InputData>(
-              builder: (context, data, child) => data.isLoading
+              builder: (context, data, child) => data.taskLists.isEmpty
                   ? const Center(
-                      child: CircularProgressIndicator(
-                        color: Colors.red,
+                      child: Text(
+                        'No Task Yet!',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 25,
+                          fontWeight: FontWeight.w900,
+                        ),
                       ),
                     )
-                  : ListView.builder(
-                      itemCount: data.taskLists.length,
-                      itemBuilder: (context, index) {
-                        return TaskListItem(
-                          task: data.taskLists[index],
-                          index: index,
-                        );
-                      },
-                    ),
+                  : data.isLoading
+                      ? const Center(
+                          child: CircularProgressIndicator(
+                            color: Colors.red,
+                          ),
+                        )
+                      : ListView.builder(
+                          itemCount: data.taskLists.length,
+                          itemBuilder: (context, index) {
+                            return TaskListItem(
+                              task: data.taskLists[index],
+                              index: index,
+                            );
+                          },
+                        ),
             ),
           ),
         ],
