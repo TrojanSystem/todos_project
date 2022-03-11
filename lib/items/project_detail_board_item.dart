@@ -36,6 +36,9 @@ class ProjectDetailBoardItem extends StatelessWidget {
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.normal,
+                decorationStyle: TextDecorationStyle.solid,
+                decorationThickness: 3,
+                decorationColor: Colors.red,
                 decoration: selectedTodo.isTaskCompleted
                     ? TextDecoration.lineThrough
                     : TextDecoration.none,
