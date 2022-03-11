@@ -8,7 +8,7 @@ class DatabaseProjectList {
       join(await getDatabasesPath(), 'projectTodo.db'),
       onCreate: (db, version) async {
         await db.execute(
-          '''CREATE TABLE projectTodo(id INTEGER PRIMARY KEY, todo TEXT, indexs TEXT)''',
+          '''CREATE TABLE projectTodo(id INTEGER PRIMARY KEY, todo TEXT,isTaskCompleted int, indexs TEXT)''',
         );
       },
       version: 1,
@@ -36,7 +36,7 @@ class DatabaseProjectList {
       'projectTodo',
       item.toMap(),
       where: 'id = ?',
-      whereArgs: [item.indexs],
+      whereArgs: [item.id],
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
     return rows > 0;

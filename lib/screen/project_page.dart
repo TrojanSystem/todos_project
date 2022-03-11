@@ -1,6 +1,7 @@
 import 'package:example/input_form/project_task_list_input.dart';
 import 'package:example/input_form/project_title_input.dart';
 import 'package:example/model/project_title_input_data.dart';
+import 'package:example/model/project_todo_input_data.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -12,6 +13,7 @@ class ProjectPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -33,21 +35,33 @@ class ProjectPage extends StatelessWidget {
                     context: context,
                     builder: (_) => const ProjectTitleInput(),
                   );
-                },colour: Colors.blue[800],
+                },
+                colour: Colors.blue[800],
               ),
             ),
           ],
         ),
       ),
       body: Consumer<ProjectTitleInputData>(
-        builder: (context, data, child) => ListView.builder(
-          itemCount: data.projectTitleLists.length,
-          itemBuilder: (context, index) => ProjectListItem(
-            title: data.projectTitleLists[index],
+        builder: (context, data, child) => data.projectTitleLists.isEmpty
+            ? const Center(
+                child: Text(
+                  'No Project Yet!',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 25,
+                    fontWeight: FontWeight.w900,
+                  ),
+                ),
+              )
+            : ListView.builder(
+                itemCount: data.projectTitleLists.length,
+                itemBuilder: (context, index) => ProjectListItem(
+                  title: data.projectTitleLists[index],
 
-            index: index,
-          ),
-        ),
+                  index: index,
+                ),
+              ),
       ),
     );
   }

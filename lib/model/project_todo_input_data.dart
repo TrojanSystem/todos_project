@@ -1,14 +1,15 @@
 import 'package:example/database/database_project_list.dart';
-import 'package:example/database/database_project_title.dart';
 import 'package:example/model/project_list_model.dart';
-import 'package:example/model/project_title_model.dart';
 import 'package:flutter/material.dart';
 
 class ProjectTodoInputData extends ChangeNotifier {
   DatabaseProjectList db = DatabaseProjectList();
-  int taskDone = 2;
+  int projectTaskDone = 0;
+  int projectTaskLength = 0;
   bool _isLoading = true;
   bool _isTaped = true;
+  int clickedTotLength = 0;
+  int clickedCompletedLength = 0;
   List<ProjectListModel> _projectTodoList = [];
 
   List<ProjectListModel> get projectTodoLists => _projectTodoList;
@@ -48,13 +49,51 @@ class ProjectTodoInputData extends ChangeNotifier {
     notifyListeners();
   }
 
-  String percent() {
-    double x = (taskDone / _projectTodoList.length);
-    return 0.8.toStringAsFixed(2);
+  Future changeStatusForTaskList(ProjectListModel model) async {
+    model.isTaskCompleted = !model.isTaskCompleted;
+    await db.updateTaskList(model);
+    notifyListeners();
+    _projectTodoList = await db.getTasks();
+    notifyListeners();
   }
 
-  int doublePercent() {
-    double x = (taskDone * 100 / _projectTodoList.length);
-    return 8.floor();
+
+  String percent(String index) {
+    double x = 0;
+    var xx =
+        _projectTodoList.where((element) => element.indexs == index).toList();
+    clickedTotLength = xx.length;
+
+    var yy = xx.where((element) => element.isTaskCompleted == true).toList();
+    clickedCompletedLength = yy.length;
+
+    if (clickedTotLength == 0) {
+      (clickedCompletedLength / 1);
+    } else {
+      x = (clickedCompletedLength / clickedTotLength);
+    }
+
+    if (x < 1) {
+      return x.toStringAsFixed(2);
+    } else {
+      return 1.0.toString();
+    }
+  }
+
+  int doublePercent(String index) {
+    double x = 0;
+    var xx =
+        _projectTodoList.where((element) => element.indexs == index).toList();
+    clickedTotLength = xx.length;
+
+    var yy = xx.where((element) => element.isTaskCompleted == true).toList();
+    clickedCompletedLength = yy.length;
+
+    if (clickedTotLength == 0) {
+      (clickedCompletedLength * 100 / 1);
+    } else {
+      x = (clickedCompletedLength * 100 / clickedTotLength);
+    }
+    return x.floor();
   }
 }

@@ -5,10 +5,12 @@ import 'package:provider/provider.dart';
 import '../model/input_data.dart';
 
 class ProgressContainerItem extends StatefulWidget {
-  final int index;
+  final int taskDone;
+  final int totalTask;
 
   ProgressContainerItem({
-    this.index,
+    this.taskDone,
+    this.totalTask,
   });
 
   @override
@@ -16,13 +18,11 @@ class ProgressContainerItem extends StatefulWidget {
 }
 
 class _ProgressContainerItemState extends State<ProgressContainerItem> {
-  int taskDone = 2;
-
   @override
   Widget build(BuildContext context) {
     final taskData = Provider.of<InputData>(context);
     return Container(
-      margin: const EdgeInsets.only(left: 10,right: 10),
+      margin: const EdgeInsets.only(left: 10, right: 10),
       padding: const EdgeInsets.only(left: 20),
       height: 100,
       width: double.infinity,
@@ -32,7 +32,9 @@ class _ProgressContainerItemState extends State<ProgressContainerItem> {
             circularStrokeCap: CircularStrokeCap.round,
             radius: 80.0,
             lineWidth: 9.0,
-            percent: 0.8, //double.parse(taskData.percent())
+            percent: double.parse(
+              taskData.percent(),
+            ),
             center: Text(
               '${taskData.doublePercent()} %',
               style: const TextStyle(fontWeight: FontWeight.bold),
@@ -57,7 +59,7 @@ class _ProgressContainerItemState extends State<ProgressContainerItem> {
                 text: TextSpan(
                   children: [
                     TextSpan(
-                      text: taskDone.toString(),
+                      text: widget.taskDone.toString(),
                       style: TextStyle(
                         color: Colors.blue[900],
                       ),
@@ -69,7 +71,7 @@ class _ProgressContainerItemState extends State<ProgressContainerItem> {
                       ),
                     ),
                     TextSpan(
-                      text: widget.index.toString(),
+                      text: widget.totalTask.toString(),
                       style: TextStyle(
                         color: Colors.blue[900],
                       ),

@@ -1,5 +1,6 @@
 import 'package:example/input_form/update_task.dart';
 import 'package:example/model/input_data.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -9,13 +10,12 @@ class TaskListItem extends StatelessWidget {
   final Task task;
   final int index;
 
+
   TaskListItem({this.task, this.index});
-
-
 
   @override
   Widget build(BuildContext context) {
-    bool _isTapped = false;
+
     return GestureDetector(
       onTap: () {
         Navigator.of(context).push(
@@ -44,7 +44,13 @@ class TaskListItem extends StatelessWidget {
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
                       task.title,
-                      style: const TextStyle(
+                      style: TextStyle(
+                        decorationStyle: TextDecorationStyle.solid,
+                        decorationColor: Colors.white,
+                        decorationThickness: 3,
+                        decoration: task.isCompeleted
+                            ? TextDecoration.lineThrough
+                            : TextDecoration.none,
                         fontSize: 20,
                         fontWeight: FontWeight.w900,
                       ),
@@ -52,7 +58,17 @@ class TaskListItem extends StatelessWidget {
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text(task.description),
+                    child: Text(
+                      task.description,
+                      style: TextStyle(
+                        decorationStyle: TextDecorationStyle.solid,
+                        decorationThickness: 3,
+                        decorationColor: Colors.white,
+                        decoration: task.isCompeleted
+                            ? TextDecoration.lineThrough
+                            : TextDecoration.none,
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -60,12 +76,11 @@ class TaskListItem extends StatelessWidget {
             Expanded(
               child: IconButton(
                 onPressed: () {
-                 Provider.of<InputData>(context, listen: false)
-                      .changeStatus();
+                  Provider.of<InputData>(context, listen: false)
+                      .changeStatusForTask(task);
                 },
                 icon: Icon(
-                  Provider.of<InputData>(context, listen: false)
-                      .isTaped
+                  !task.isCompeleted
                       ? Icons.circle_outlined
                       : Icons.check_circle_outline_rounded,
                 ),

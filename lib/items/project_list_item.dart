@@ -3,14 +3,11 @@ import 'package:example/model/project_title_model.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:provider/provider.dart';
-
-import '../model/input_data.dart';
 import '../model/project_todo_input_data.dart';
 
 class ProjectListItem extends StatefulWidget {
   final int index;
- final ProjectTitleModel title;
-
+  final ProjectTitleModel title;
 
   ProjectListItem({this.index, this.title});
 
@@ -19,15 +16,13 @@ class ProjectListItem extends StatefulWidget {
 }
 
 class _ProjectListItemState extends State<ProjectListItem> {
-  int taskDone = 2;
-
   @override
   Widget build(BuildContext context) {
     final selectedTodo = Provider.of<ProjectTodoInputData>(context)
         .projectTodoLists
         .where((element) => element.indexs == widget.title.id.toString())
         .toList();
-    final taskData = Provider.of<InputData>(context);
+    final taskData = Provider.of<ProjectTodoInputData>(context, listen: false);
     return Container(
       margin: const EdgeInsets.only(
         left: 10,
@@ -57,19 +52,21 @@ class _ProjectListItemState extends State<ProjectListItem> {
             circularStrokeCap: CircularStrokeCap.round,
             radius: 60.0,
             lineWidth: 5.0,
-            percent: 0.8,
-            //double.parse(taskData.percent())
+            percent: double.parse(taskData.percent(widget.title.id.toString())),
             center: Text(
-              '${taskData.doublePercent()} %',
+              '${taskData.doublePercent(widget.title.id.toString())} %',
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
             progressColor: Colors.blue[900],
           ),
           IconButton(
             onPressed: () {
+
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (_) => ProjectDetailBoard(index: widget.title.id.toString()),
+                  builder: (_) => ProjectDetailBoard(
+                    indexOfClick: widget.title.id.toString(),
+                  ),
                 ),
               );
             },
@@ -78,6 +75,7 @@ class _ProjectListItemState extends State<ProjectListItem> {
         ],
       ),
       decoration: BoxDecoration(
+        //color: Color.fromRGBO(randomRed,randomGreen, randomBlue, 1),
         border: Border.all(color: Colors.grey, width: 2),
         borderRadius: const BorderRadius.all(
           Radius.circular(20),

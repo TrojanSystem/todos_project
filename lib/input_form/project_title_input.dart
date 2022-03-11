@@ -1,7 +1,11 @@
+import 'dart:math';
+
 import 'package:example/model/project_title_input_data.dart';
 import 'package:example/model/project_title_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../constants.dart';
 
 class ProjectTitleInput extends StatefulWidget {
   const ProjectTitleInput({Key key}) : super(key: key);
@@ -11,6 +15,14 @@ class ProjectTitleInput extends StatefulWidget {
 }
 
 class _ProjectTitleInputState extends State<ProjectTitleInput> {
+  @override
+  void initState() {
+    randomRed = Random().nextInt(200)+10;
+    randomGreen = Random().nextInt(200)+10;
+    randomBlue = Random().nextInt(200)+10;
+    super.initState();
+  }
+
   final formKey = GlobalKey<FormState>();
   String projectTitle = '';
 

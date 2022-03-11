@@ -35,7 +35,12 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final List taskData = Provider.of<InputData>(context).taskLists;
+    final numberOfCompletedTask = Provider.of<InputData>(context)
+        .taskLists
+        .where((element) => element.isCompeleted == true)
+        .toList();
+    Provider.of<InputData>(context).taskDone = numberOfCompletedTask.length;
+    final numberOfTotalTask = Provider.of<InputData>(context).taskLists.length;
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -79,7 +84,10 @@ class _HomePageState extends State<HomePage> {
                 const SizedBox(
                   height: 10,
                 ),
-                ProgressContainerItem(index: 5),
+                ProgressContainerItem(
+                  taskDone: numberOfCompletedTask.length,
+                  totalTask: numberOfTotalTask,
+                ),
                 const SizedBox(
                   height: 10,
                 ),
