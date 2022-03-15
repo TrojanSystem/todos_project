@@ -51,7 +51,16 @@ class _ProjectDetailBoardState extends State<ProjectDetailBoard> {
         children: [
           const Divider(color: Colors.grey, thickness: 1),
           Expanded(
-            child: ListView.builder(
+            child:selectedTodo.isEmpty ?const Center(
+              child: Text(
+                'No Project Task List Yet!',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 25,
+                  fontWeight: FontWeight.w900,
+                ),
+              ),
+            ) :ListView.builder(
               itemBuilder: (context, index) {
                 return ProjectDetailBoardItem(
                   selectedTodo: selectedTodo[index],
