@@ -10,18 +10,19 @@ class TaskListItem extends StatelessWidget {
   final Task task;
   final int index;
 
-
   TaskListItem({this.task, this.index});
 
   @override
   Widget build(BuildContext context) {
-
     return GestureDetector(
+      onLongPress: () {
+        Provider.of<InputData>(context,listen: false).deleteTaskList(task.id);
+      },
       onTap: () {
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (_) => UpdateTask(
-              index: index,
+              index: task.id,
               existedDescription: task.description,
               existedTitle: task.title,
             ),
