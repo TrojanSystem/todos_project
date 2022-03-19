@@ -1,20 +1,34 @@
-import 'package:example/model/project_list_model.dart';
-import 'package:example/model/project_todo_input_data.dart';
+import 'dart:math';
+
+import 'package:example/model/project_title_input_data.dart';
+import 'package:example/model/project_title_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../constants.dart';
 
-class ProjectTaskListInput extends StatefulWidget {
- final String index;
-   ProjectTaskListInput({this.index});
+class ProjectTitleUpdateInput extends StatefulWidget {
+  final int index;
+  final String existedProjectTitle;
+
+  const ProjectTitleUpdateInput({this.index, this.existedProjectTitle});
 
   @override
-  State<ProjectTaskListInput> createState() => _ProjectTaskListInputState();
+  State<ProjectTitleUpdateInput> createState() =>
+      _ProjectTitleUpdateInputState();
 }
 
-class _ProjectTaskListInputState extends State<ProjectTaskListInput> {
+class _ProjectTitleUpdateInputState extends State<ProjectTitleUpdateInput> {
+  @override
+  void initState() {
+    randomRed = Random().nextInt(200) + 10;
+    randomGreen = Random().nextInt(200) + 10;
+    randomBlue = Random().nextInt(200) + 10;
+    super.initState();
+  }
+
   final formKey = GlobalKey<FormState>();
-  String lists = '';
+  String projectTitle = '';
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +43,7 @@ class _ProjectTaskListInputState extends State<ProjectTaskListInput> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
-                  'Task List',
+                  'Project Title',
                   style: TextStyle(
                     fontWeight: FontWeight.w900,
                     fontSize: 18,
@@ -38,19 +52,20 @@ class _ProjectTaskListInputState extends State<ProjectTaskListInput> {
                 const SizedBox(
                   height: 10,
                 ),
-                TextFormField(maxLines: 2,
+                TextFormField(
+                  initialValue: widget.existedProjectTitle,
                   validator: (value) {
                     if (value.isEmpty) {
-                      return 'Task List can\'t be empty';
+                      return 'Project Title can\'t be empty';
                     } else {
                       return null;
                     }
                   },
                   onSaved: (value) {
-                    lists = value;
+                    projectTitle = value;
                   },
                   decoration: InputDecoration(
-                    hintText: 'Enter the List of the Project',
+                    hintText: 'Enter the title of the Project',
                     filled: true,
                     fillColor: Colors.grey[200],
                     enabledBorder: OutlineInputBorder(
@@ -70,9 +85,12 @@ class _ProjectTaskListInputState extends State<ProjectTaskListInput> {
             onTap: () {
               if (formKey.currentState.validate()) {
                 formKey.currentState.save();
-               var projectTodoModel = ProjectListModel(todo: lists,indexs: widget.index);
-                Provider.of<ProjectTodoInputData>(context, listen: false)
-                    .addProjectTitleList(projectTodoModel);
+                var projectModel = ProjectTitleModel(
+                  id: widget.index,
+                  title: projectTitle,
+                );
+                Provider.of<ProjectTitleInputData>(context, listen: false)
+                    .updateProjectTitleList(projectModel);
                 Navigator.of(context).pop();
               }
             },
@@ -86,7 +104,7 @@ class _ProjectTaskListInputState extends State<ProjectTaskListInput> {
               ),
               child: const Center(
                 child: Text(
-                  'Add TaskList',
+                  'Update ProjectTitle',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 18,

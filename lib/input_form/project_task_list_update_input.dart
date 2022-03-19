@@ -3,16 +3,20 @@ import 'package:example/model/project_todo_input_data.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+class ProjectTaskListUpdateInput extends StatefulWidget {
+  final int index;
+  final String taskList;
+  final String strrIndex;
 
-class ProjectTaskListInput extends StatefulWidget {
- final String index;
-   ProjectTaskListInput({this.index});
+  ProjectTaskListUpdateInput({this.index, this.taskList, this.strrIndex});
 
   @override
-  State<ProjectTaskListInput> createState() => _ProjectTaskListInputState();
+  State<ProjectTaskListUpdateInput> createState() =>
+      _ProjectTaskListUpdateInputState();
 }
 
-class _ProjectTaskListInputState extends State<ProjectTaskListInput> {
+class _ProjectTaskListUpdateInputState
+    extends State<ProjectTaskListUpdateInput> {
   final formKey = GlobalKey<FormState>();
   String lists = '';
 
@@ -39,6 +43,7 @@ class _ProjectTaskListInputState extends State<ProjectTaskListInput> {
                   height: 10,
                 ),
                 TextFormField(maxLines: 2,
+                  initialValue: widget.taskList,
                   validator: (value) {
                     if (value.isEmpty) {
                       return 'Task List can\'t be empty';
@@ -50,7 +55,7 @@ class _ProjectTaskListInputState extends State<ProjectTaskListInput> {
                     lists = value;
                   },
                   decoration: InputDecoration(
-                    hintText: 'Enter the List of the Project',
+                    hintText: 'Update the List of the Project',
                     filled: true,
                     fillColor: Colors.grey[200],
                     enabledBorder: OutlineInputBorder(
@@ -70,9 +75,13 @@ class _ProjectTaskListInputState extends State<ProjectTaskListInput> {
             onTap: () {
               if (formKey.currentState.validate()) {
                 formKey.currentState.save();
-               var projectTodoModel = ProjectListModel(todo: lists,indexs: widget.index);
+                var projectTodoModel = ProjectListModel(
+                  todo: lists,
+                  indexs: widget.strrIndex,
+                  id: widget.index,
+                );
                 Provider.of<ProjectTodoInputData>(context, listen: false)
-                    .addProjectTitleList(projectTodoModel);
+                    .updateProjectTitleList(projectTodoModel);
                 Navigator.of(context).pop();
               }
             },
@@ -86,7 +95,7 @@ class _ProjectTaskListInputState extends State<ProjectTaskListInput> {
               ),
               child: const Center(
                 child: Text(
-                  'Add TaskList',
+                  'Update TaskList',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 18,

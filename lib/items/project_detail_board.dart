@@ -65,6 +65,7 @@ class _ProjectDetailBoardState extends State<ProjectDetailBoard> {
                 return ProjectDetailBoardItem(
                   selectedTodo: selectedTodo[index],
                   index: index,
+                  strIndex:widget.indexOfClick,
                 );
               },
               itemCount: selectedTodo.length,
