@@ -259,7 +259,7 @@ class _UpdateTaskState extends State<UpdateTask> {
                     id: widget.index,
                     title: updateTitle,
                     description: updateDescription,
-                    dateTime: updateDateTime,
+                    dateTime: updateDateTime.toString(),
                     alarm: updateAlarm,
                   );
                   Provider.of<InputData>(context, listen: false)

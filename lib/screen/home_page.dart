@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import '../constants.dart';
 import '../input_form/add_task.dart';
 import '../items/time_teller.dart';
 import '../model/input_data.dart';
@@ -18,7 +19,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   String time = "";
-
+  int selectedDayOfMonth = DateTime.now().day;
   String day = "";
 
   @override
@@ -35,12 +36,21 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final daysInAMonth = Provider.of<InputData>(context).daysOfMonth;
     final numberOfCompletedTask = Provider.of<InputData>(context)
         .taskLists
         .where((element) => element.isCompeleted == true)
         .toList();
+    final taskFilter = Provider.of<InputData>(context).taskLists;
+    final filteredTodayData = taskFilter
+        .where((element) =>
+    DateTime.parse(element.dateTime).day == selectedDayOfMonth)
+        .toList();
     Provider.of<InputData>(context).taskDone = numberOfCompletedTask.length;
-    final numberOfTotalTask = Provider.of<InputData>(context).taskLists.length;
+    final numberOfTotalTask = filteredTodayData.length;
+
+
+
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -49,8 +59,33 @@ class _HomePageState extends State<HomePage> {
         elevation: 0,
         toolbarHeight: 90,
         flexibleSpace: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 38.0, left: 30),
+              child: DropdownButton(
+                dropdownColor: Colors.grey[850],
+                iconEnabledColor: Colors.red,
+                menuMaxHeight: 300,
+                value: selectedDayOfMonth,
+                items: daysInAMonth
+                    .map(
+                      (e) => DropdownMenuItem(
+                        child: Text(
+                          e['mon'],
+                          style: kkDropDown,
+                        ),
+                        value: e['day'],
+                      ),
+                    )
+                    .toList(),
+                onChanged: (value) {
+                  setState(() {
+                    selectedDayOfMonth = value;
+                  });
+                },
+              ),
+            ),
             Padding(
               padding: const EdgeInsets.only(top: 38.0, right: 30),
               child: AddButton(
@@ -98,7 +133,7 @@ class _HomePageState extends State<HomePage> {
           Expanded(
             flex: 2,
             child: Consumer<InputData>(
-              builder: (context, data, child) => data.taskLists.isEmpty
+              builder: (context, data, child) =>filteredTodayData.isEmpty
                   ? const Center(
                       child: Text(
                         'No Task Yet!',
@@ -116,10 +151,10 @@ class _HomePageState extends State<HomePage> {
                           ),
                         )
                       : ListView.builder(
-                          itemCount: data.taskLists.length,
+                          itemCount: filteredTodayData.length,
                           itemBuilder: (context, index) {
                             return TaskListItem(
-                              task: data.taskLists[index],
+                              task: filteredTodayData[index],
                               index: index,
                             );
                           },

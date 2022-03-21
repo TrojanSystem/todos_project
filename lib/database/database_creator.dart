@@ -8,7 +8,7 @@ class DatabaseHelper {
       join(await getDatabasesPath(), 'taskList.db'),
       onCreate: (db, version) async {
         await db.execute(
-          '''CREATE TABLE taskList(id INTEGER PRIMARY KEY, title TEXT, isCompeleted int, description TEXT)''',
+          '''CREATE TABLE taskList(id INTEGER PRIMARY KEY, title TEXT, dateTime TEXT,isCompeleted int, description TEXT)''',
         );
       },
       version: 1,

@@ -20,7 +20,7 @@ class _AddTaskState extends State<AddTask> {
       lastDate: DateTime(DateTime.now().year + 1),
       firstDate: DateTime(DateTime.now().month + 1),
     ).then((value) => setState(() {
-          dateTime = value;
+          dateTime = value.toString();
         }));
   }
 
@@ -44,7 +44,7 @@ class _AddTaskState extends State<AddTask> {
   String title = '';
   String description = '';
   TimeOfDay alarm = TimeOfDay.now();
-  DateTime dateTime = DateTime.now();
+  String dateTime = DateTime.now().toString();
 
   @override
   Widget build(BuildContext context) {
@@ -229,7 +229,7 @@ class _AddTaskState extends State<AddTask> {
                         width: 300,
                         height: 60,
                         child: Text(
-                          'Date is set to : ${DateFormat.yMEd().format(dateTime)}',
+                          'Date is set to : ${DateFormat.yMEd().format(DateTime.parse(dateTime))}',
                         ),
                       ),
                       IconButton(
@@ -252,7 +252,7 @@ class _AddTaskState extends State<AddTask> {
                   var model = Task(
                     title: title,
                     description: description,
-                    dateTime: dateTime,
+                    dateTime: dateTime.isEmpty ? DateTime.now().toString(): dateTime,
                     alarm: alarm,
                   );
                   Provider.of<InputData>(context, listen: false)
