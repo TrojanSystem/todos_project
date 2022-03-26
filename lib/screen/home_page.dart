@@ -37,14 +37,14 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final daysInAMonth = Provider.of<InputData>(context).daysOfMonth;
-    final numberOfCompletedTask = Provider.of<InputData>(context)
-        .taskLists
-        .where((element) => element.isCompeleted == true)
-        .toList();
+
     final taskFilter = Provider.of<InputData>(context).taskLists;
     final filteredTodayData = taskFilter
         .where((element) =>
     DateTime.parse(element.dateTime).day == selectedDayOfMonth)
+        .toList();
+    final numberOfCompletedTask = filteredTodayData
+        .where((element) => element.isCompeleted == true)
         .toList();
     Provider.of<InputData>(context).taskDone = numberOfCompletedTask.length;
     final numberOfTotalTask = filteredTodayData.length;
