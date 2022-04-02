@@ -39,7 +39,8 @@ class _HomePageState extends State<HomePage> {
     final daysInAMonth = Provider.of<InputData>(context).daysOfMonth;
 
     final taskFilter = Provider.of<InputData>(context).taskLists;
-    final filteredTodayData = taskFilter
+    final filterByMonth = taskFilter.where((element) => DateTime.parse(element.dateTime).month == DateTime.now().month).toList();
+    final filteredTodayData = filterByMonth
         .where((element) =>
     DateTime.parse(element.dateTime).day == selectedDayOfMonth)
         .toList();
@@ -48,7 +49,7 @@ class _HomePageState extends State<HomePage> {
         .toList();
     Provider.of<InputData>(context).taskDone = numberOfCompletedTask.length;
     final numberOfTotalTask = filteredTodayData.length;
-
+   Provider.of<InputData>(context).totalTask= filteredTodayData.length;
 
 
 

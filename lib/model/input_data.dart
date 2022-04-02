@@ -6,6 +6,7 @@ import 'task_model.dart';
 class InputData extends ChangeNotifier {
   DatabaseHelper db = DatabaseHelper();
   int taskDone = 0;
+  int totalTask = 0;
   bool _isLoading = true;
   bool _isTaped = true;
   List<Task> _taskList = [];
@@ -57,10 +58,10 @@ class InputData extends ChangeNotifier {
 
   String percent() {
     double x = 0;
-    if (taskLists.isEmpty) {
+    if (totalTask==0) {
       x = (taskDone / 1);
     } else {
-      x = (taskDone / taskLists.length);
+      x = (taskDone / totalTask);
     }
 
     if (x < 1) {
@@ -72,10 +73,10 @@ class InputData extends ChangeNotifier {
 
   int doublePercent() {
     double x = 0;
-    if (taskLists.isEmpty) {
+    if (totalTask==0) {
       x = (taskDone * 100 / 1);
     } else {
-      x = (taskDone * 100 / taskLists.length);
+      x = (taskDone * 100 / totalTask);
     }
 
     return x.floor();

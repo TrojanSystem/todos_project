@@ -185,7 +185,7 @@ class _UpdateTaskState extends State<UpdateTask> {
                           borderRadius: BorderRadius.circular(10),
                           color: Colors.grey[200],
                         ),
-                        width: 300,
+                        width: 250,
                         height: 60,
                         child: GestureDetector(
                           onTap: () {
@@ -232,7 +232,7 @@ class _UpdateTaskState extends State<UpdateTask> {
                           borderRadius: BorderRadius.circular(10),
                           color: Colors.grey[200],
                         ),
-                        width: 300,
+                        width: 250,
                         height: 60,
                         child: Text(
                           'Date is set to : ${DateFormat.yMEd().format(updateDateTime)}',
