@@ -1,14 +1,16 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+
 import '../constants.dart';
 import '../input_form/add_task.dart';
-import '../items/time_teller.dart';
-import '../model/input_data.dart';
 import '../items/button.dart';
 import '../items/progress_container_item.dart';
 import '../items/task_list_item.dart';
+import '../items/time_teller.dart';
+import '../model/input_data.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key key}) : super(key: key);
@@ -39,19 +41,24 @@ class _HomePageState extends State<HomePage> {
     final daysInAMonth = Provider.of<InputData>(context).daysOfMonth;
 
     final taskFilter = Provider.of<InputData>(context).taskLists;
-    final filterByMonth = taskFilter.where((element) => DateTime.parse(element.dateTime).month == DateTime.now().month).toList();
+    final taskFilterYear = taskFilter
+        .where((element) =>
+            DateTime.parse(element.dateTime).year == DateTime.now().year)
+        .toList();
+    final filterByMonth = taskFilterYear
+        .where((element) =>
+            DateTime.parse(element.dateTime).month == DateTime.now().month)
+        .toList();
     final filteredTodayData = filterByMonth
         .where((element) =>
-    DateTime.parse(element.dateTime).day == selectedDayOfMonth)
+            DateTime.parse(element.dateTime).day == selectedDayOfMonth)
         .toList();
     final numberOfCompletedTask = filteredTodayData
         .where((element) => element.isCompeleted == true)
         .toList();
     Provider.of<InputData>(context).taskDone = numberOfCompletedTask.length;
     final numberOfTotalTask = filteredTodayData.length;
-   Provider.of<InputData>(context).totalTask= filteredTodayData.length;
-
-
+    Provider.of<InputData>(context).totalTask = filteredTodayData.length;
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -134,7 +141,7 @@ class _HomePageState extends State<HomePage> {
           Expanded(
             flex: 2,
             child: Consumer<InputData>(
-              builder: (context, data, child) =>filteredTodayData.isEmpty
+              builder: (context, data, child) => filteredTodayData.isEmpty
                   ? const Center(
                       child: Text(
                         'No Task Yet!',
