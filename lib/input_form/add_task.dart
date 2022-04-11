@@ -20,7 +20,11 @@ class _AddTaskState extends State<AddTask> {
       lastDate: DateTime(DateTime.now().year + 1),
       firstDate: DateTime(DateTime.now().month + 1),
     ).then((value) => setState(() {
-          dateTime = value.toString();
+          if (value != null) {
+            dateTime = value.toString();
+          } else {
+            dateTime = DateTime.now().toString();
+          }
         }));
   }
 
@@ -31,10 +35,14 @@ class _AddTaskState extends State<AddTask> {
     ).then(
       (value) => setState(
         () {
-          alarm = value;
-          int hour = value.hour;
-          int minutes = value.minute;
-          FlutterAlarmClock.createAlarm(hour, minutes);
+          if (value != null) {
+            alarm = value;
+            int hour = value.hour;
+            int minutes = value.minute;
+            FlutterAlarmClock.createAlarm(hour, minutes);
+          } else {
+            return;
+          }
         },
       ),
     );
@@ -87,7 +95,7 @@ class _AddTaskState extends State<AddTask> {
                     validator: (value) {
                       if (value.isEmpty) {
                         return 'Title can\'t be empty';
-                      }else {
+                      } else {
                         return null;
                       }
                     },
@@ -252,7 +260,8 @@ class _AddTaskState extends State<AddTask> {
                   var model = Task(
                     title: title,
                     description: description,
-                    dateTime: dateTime.isEmpty ? DateTime.now().toString(): dateTime,
+                    dateTime:
+                        dateTime.isEmpty ? DateTime.now().toString() : dateTime,
                     alarm: alarm,
                   );
                   Provider.of<InputData>(context, listen: false)
